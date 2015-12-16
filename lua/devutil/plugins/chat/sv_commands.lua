@@ -61,8 +61,9 @@ devUtil.addChatCommand( "trace", {
         local args = { ... }
         local target = tonumber( args[1] ) and Player( tonumber( args[1] ) ) or client
         local ent = target:GetEyeTrace().Entity
+        if ent:IsWorld() then target:ChatPrint( "You cannot delete the world." ) return end
 
-        if not ent:IsWorld() then ent:Remove() end
+        ent:Remove()
         target:ChatPrint( tostring( ent ) .. " removed." )
       end
     }
