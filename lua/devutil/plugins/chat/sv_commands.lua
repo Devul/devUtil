@@ -91,6 +91,16 @@ devUtil.addChatCommand( "trace", {
         ent:Fire( "open" )
       end
     },
+    ["goto"] = {
+      callback = function( client, ... )
+        if not IsValid( client ) then return end
+
+        local args = { ... }
+        local pos = client:GetEyeTrace().HitPos
+
+        client:SetPos( pos )
+      end
+    },
   }
 })
 
