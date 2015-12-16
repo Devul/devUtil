@@ -35,11 +35,10 @@ devUtil.addChatCommand( "trace", {
         if not IsValid( client ) then return end
 
         local args = { ... }
-        local target = tonumber( args[1] ) and Player( tonumber( args[1] ) ) or client
-        local ent = target:GetEyeTrace().Entity
+        local ent = client:GetEyeTrace().Entity
 
-        target:ChatPrint( tostring( ent:GetPos() ) )
-        devUtil.setClipboardText( target, tostring( ent:GetPos() ) )
+        client:ChatPrint( tostring( ent:GetPos() ) )
+        devUtil.setClipboardText( client, tostring( ent:GetPos() ) )
       end
     },
     ["ang"] = {
@@ -47,11 +46,10 @@ devUtil.addChatCommand( "trace", {
         if not IsValid( client ) then return end
 
         local args = { ... }
-        local target = tonumber( args[1] ) and Player( tonumber( args[1] ) ) or client
-        local ent = target:GetEyeTrace().Entity
+        local ent = client:GetEyeTrace().Entity
 
-        target:ChatPrint( tostring( ent:GetAngles() ) )
-        devUtil.setClipboardText( target, tostring( ent:GetAngles() ) )
+        client:ChatPrint( tostring( ent:GetAngles() ) )
+        devUtil.setClipboardText( client, tostring( ent:GetAngles() ) )
       end
     },
     ["del"] = {
@@ -59,12 +57,29 @@ devUtil.addChatCommand( "trace", {
         if not IsValid( client ) then return end
 
         local args = { ... }
-        local target = tonumber( args[1] ) and Player( tonumber( args[1] ) ) or client
-        local ent = target:GetEyeTrace().Entity
-        if ent:IsWorld() then target:ChatPrint( "You cannot delete the world." ) return end
+        local ent = client:GetEyeTrace().Entity
+        if ent:IsWorld() then client:ChatPrint( "You cannot delete the world." ) return end
 
         ent:Remove()
-        target:ChatPrint( tostring( ent ) .. " removed." )
+        client:ChatPrint( tostring( ent ) .. " removed." )
+      end
+    },
+    ["col"] = {
+      callback = function( client, ... )
+        if not IsValid( client ) then return end
+        local args = { ... }
+        local ent = client:GetEyeTrace().Entity
+        if ent:IsWorld() then client:ChatPrint( "You cannot delete the world." ) return end
+
+        if devUtil.config.colors[ args[1] ] then
+          ent:SetColor( devUtil.config.colors[ args[1] ] )
+        elseif tonumber( args[1] ) and tonumber( args[2] ) and tonumber( args[3] ) then
+          ent:SetColor( Color( args[1], args[2], args[3], ( args[4] or 255 ) ) )
+
+          if args[4] then
+            ent:SetRenderMode( RENDERMODE_TRANSALPHA )
+          end
+        end
       end
     }
   }

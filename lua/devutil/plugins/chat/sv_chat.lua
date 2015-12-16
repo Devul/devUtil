@@ -35,7 +35,7 @@ function devUtil.playerSay( client, text )
       local accessFunc = subCommandData.access or commandData.access or false
       if accessFunc then accessFunc( client ) end
 
-      text[1] = nil
+      table.remove( text, 1 )
       subCommandData.callback( client, unpack( text ) )
 
       return ""
@@ -46,7 +46,7 @@ function devUtil.playerSay( client, text )
     local commandData =  devUtil.commands[ command ]
     if commandData.access and not commandData.access( client ) then return end
 
-    text[1] = nil
+    table.remove( text, 1 )
     commandData.callback( client, unpack( text ) )
 
     return ""
