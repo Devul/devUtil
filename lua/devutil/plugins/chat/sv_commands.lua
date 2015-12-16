@@ -39,7 +39,18 @@ devUtil.addChatCommand( "trace", {
 
         target:ChatPrint( tostring( target:GetEyeTrace().Entity:GetPos() ) )
         devUtil.setClipboardText( target, tostring( target:GetEyeTrace().Entity:GetPos() ) )
-      end,
+      end
+    },
+    ["ang"] = {
+      callback = function( client, ... )
+        if not IsValid( client ) then return end
+
+        local args = { ... }
+        local target = tonumber( args[1] ) and Player( tonumber( args[1] ) ) or client
+
+        target:ChatPrint( tostring( target:GetEyeTrace().Entity:GetAngles() ) )
+        devUtil.setClipboardText( target, tostring( target:GetEyeTrace().Entity:GetAngles() ) )
+      end
     }
   }
 })
