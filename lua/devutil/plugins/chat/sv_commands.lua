@@ -15,9 +15,6 @@ function devUtil.findCommand( cmd )
 end
 
 devUtil.addChatCommand( "trace", {
-  args = "number userID (optional)",
-  desc = "Returns the entity you are looking at (or the specified entity).",
-
   access = function( client ) return client:IsSuperAdmin() end,
   callback = function( client, ... )
       if not IsValid( client ) then return end
@@ -92,6 +89,33 @@ devUtil.addChatCommand( "trace", {
 
         ent:Fire( "unlock" )
         ent:Fire( "open" )
+      end
+    },
+  }
+})
+
+devUtil.addChatCommand( "npc", {
+  access = function( client ) return client:IsSuperAdmin() end,
+  callback = function( client, ... )
+      if not IsValid( client ) then return end
+
+      local args = { ... }
+      local target = tonumber( args[1] ) and Player( tonumber( args[1] ) ) or client
+
+      target:ChatPrint( tostring( target:GetEyeTrace().Entity:IsNPC() ) )
+  end,
+
+  subCommands = {
+    ["create"] = {
+      callback = function( client, ... )
+        if not IsValid( client ) then return end
+
+        local args = { ... }
+        local pos = client:GetEyeTrace().HitPos
+
+        local ent = ents.Create( args[1] and tostring( args[1] ) or "npc_zombie" )
+        ent:SetPos( pos )
+        ent:Spawn()
       end
     },
   }
