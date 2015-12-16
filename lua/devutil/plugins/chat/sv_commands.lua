@@ -36,9 +36,10 @@ devUtil.addChatCommand( "trace", {
 
         local args = { ... }
         local target = tonumber( args[1] ) and Player( tonumber( args[1] ) ) or client
+        local ent = target:GetEyeTrace().Entity
 
-        target:ChatPrint( tostring( target:GetEyeTrace().Entity:GetPos() ) )
-        devUtil.setClipboardText( target, tostring( target:GetEyeTrace().Entity:GetPos() ) )
+        target:ChatPrint( tostring( ent:GetPos() ) )
+        devUtil.setClipboardText( target, tostring( ent:GetPos() ) )
       end
     },
     ["ang"] = {
@@ -47,9 +48,22 @@ devUtil.addChatCommand( "trace", {
 
         local args = { ... }
         local target = tonumber( args[1] ) and Player( tonumber( args[1] ) ) or client
+        local ent = target:GetEyeTrace().Entity
 
-        target:ChatPrint( tostring( target:GetEyeTrace().Entity:GetAngles() ) )
-        devUtil.setClipboardText( target, tostring( target:GetEyeTrace().Entity:GetAngles() ) )
+        target:ChatPrint( tostring( ent:GetAngles() ) )
+        devUtil.setClipboardText( target, tostring( ent:GetAngles() ) )
+      end
+    },
+    ["del"] = {
+      callback = function( client, ... )
+        if not IsValid( client ) then return end
+
+        local args = { ... }
+        local target = tonumber( args[1] ) and Player( tonumber( args[1] ) ) or client
+        local ent = target:GetEyeTrace().Entity
+
+        if not ent:IsWorld() then ent:Remove() end
+        target:ChatPrint( tostring( ent ) .. " removed." )
       end
     }
   }
