@@ -81,6 +81,18 @@ devUtil.addChatCommand( "trace", {
           end
         end
       end
-    }
+    },
+    ["open"] = {
+      callback = function( client, ... )
+        if not IsValid( client ) then return end
+
+        local args = { ... }
+        local ent = client:GetEyeTrace().Entity
+        if ent:IsWorld() then client:ChatPrint( "You cannot fire the world." ) return end
+
+        ent:Fire( "unlock" )
+        ent:Fire( "open" )
+      end
+    },
   }
 })
